@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        {{ form_start(form) }}
+            {{ form_row(form.firstname, {'label':'Firstname '}) }}
+            {{ form_row(form.lastname, {'label':'Lastname '}) }}
+            {{ form_row(form.username, {'label':'Username '}) }}
+            {{ form_row(form.email, {'label':'Email '}) }}
+            {{ form_row(form.password, {'label':'Password '}) }}
+
+        <button type="submit">S'inscrire !</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock body %}

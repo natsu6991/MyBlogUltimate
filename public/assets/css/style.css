@@ -249,7 +249,8 @@ th{
 
 
 #myImg {
-    border-radius: 5px;
+    border-radius: 15px;
+    border: 1px solid #333;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -276,6 +277,7 @@ th{
 /* Modal Content (Image) */
 .modal-content {
     margin: auto;
+    border-radius: 5px;
     display: block;
     max-width: 80%;
 }

@@ -16,10 +16,17 @@ Once the database is generated, you can load the users fixtures with different r
 
 ``` php bin/console doctrine:fixtures:load ```
 
-To connect with users fixtures:
+## Server
+
+And you just need to run this command for launching the server :
+``` php bin/console server:run ```
+
+## Connection
+
+To connect with the fixtures's users:
 
 | Username | Password | ROLES        |
 | -------- | -------- | ------------ |
 | user     | user     | ROLE_USER    |
-| blogger  | centered | ROLE_BLOGGER |
+| blogger  | blogger  | ROLE_BLOGGER |
 | admin    | admin    | ROLE_ADMIN   |

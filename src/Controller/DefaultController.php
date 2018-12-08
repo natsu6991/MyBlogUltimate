@@ -2,8 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
+use App\Entity\Comment;
+use App\Entity\User;
+use App\Form\ArticleType;
+use App\Form\CommentType;
+use App\Form\UserType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class DefaultController extends Controller
 {
@@ -20,7 +31,25 @@ class DefaultController extends Controller
      */
     public function adminAction()
     {
-        return $this->render('Admin/index.html.twig');
+        /*$user = $this->getUser();
+        if ($user){
+            $userRoles = $user->getRoles();
+            if(in_array('ROLE_ADMIN', $userRoles)){
+                return $this->render('Admin/index.html.twig');
+            }else{
+                return $this->redirectToRoute('home');
+            }
+        } else {
+            return $this->redirectToRoute('index');
+        }*/
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(User::class);
+        $users = $repository->findBy(array());
+        $repositoryA = $em->getRepository(Article::class);
+        $articles = $repositoryA->findBy(array());
+        $repositoryC = $em->getRepository(Comment::class);
+        $comments = $repositoryC->findBy(array());
+        return $this->render('Admin/index.html.twig', ['users' => $users, 'articles' => $articles, 'comments' => $comments]);
     }
 
     /**
@@ -33,7 +62,7 @@ class DefaultController extends Controller
             $userRoles = $user->getRoles();
             if(in_array('ROLE_ADMIN', $userRoles)){
                 return $this->redirectToRoute('admin');
-            }else if(in_array('ROLE_USER', $userRoles)){
+            }else{
                 return $this->render(
                     'Default/index.html.twig');
             }
@@ -45,9 +74,261 @@ class DefaultController extends Controller
     /**
      * @Route("/blog", name="blog")
      */
-    public function forumAction()
+    public function blogAction()
     {
-        return $this->render('Default/blog.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Article::class);
+        $articles = $repository->findBy(array());
+
+        return $this->render('Default/blog.html.twig', ['articles'=>$articles]);
     }
+
+    /**
+     * @Route("/article/create", name="create")
+     */
+    public function createArticleAction(Request $request)
+    {
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $image = $article->getImage();
+            $imageName = $this->generateUniqueFileName().'.'.$image->guessExtension();
+            try {
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $imageName
+                );
+            } catch (FileException $e) {
+
+            }
+            $article->setImage($imageName);
+            $article->setDate(new \DateTime());
+            $article->setAuthor($user);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($article);
+            $em->flush();
+
+            return $this->redirectToRoute('blog');
+        }
+
+        return $this->render('Article/create.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/article/{id}", name="article")
+     */
+    public function showArticleAction(Request $request, Article $articleId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Article::class);
+        $article = $repository->findOneBy(array('id'=>$articleId));
+        $comments = $article->getComments()->toArray();
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $comment->setAuthor($user);
+            $comment->setArticle($article);
+            $em->persist($comment);
+            $em->flush();
+            return $this->redirectToRoute('article',['id' => $article->getId()]);
+        }
+
+        return $this->render('Article/article.html.twig', ['article'=>$article, 'comments'=>$comments, 'form' => $form->createView()]);
+    }
+    /**
+     * @Route("/article/edit/{id}", name="editArticle")
+     */
+    public function editArticleAction(Request $request, Article $articleId){
+        $user = $this->getUser();
+        if ($user != null){
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository(Article::class);
+            $article = $repository->findOneBy(
+                array('id'=>$articleId)
+            );
+            $form = $this->createForm(ArticleType::class, $article);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($article);
+                $em->flush();
+                return $this->redirectToRoute('article',['id' => $article->getId()]);
+            }
+
+            return $this->render('Article/edit.html.twig',
+                ['form' => $form->createView(),'user'=>$user]
+            );
+        }else{
+            return $this->redirectToRoute('blog');
+        }
+    }
+
+    /**
+     * @Route("/article/remove/{id}", name="removeArticle")
+     */
+    public function removeArticleAction(Request $request, Article $articleId )
+    {
+        $user = $this->getUser();
+        if ($user){
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository(Article::class);
+            $article = $repository->findOneBy(
+                array('id'=>$articleId)
+            );
+            if ($article != null){
+                $em->remove($article);
+                $em->flush();
+            }
+            return $this->redirectToRoute('blog');
+        }
+    }
+
+    /**
+     * @Route("/comment/remove/{id}", name="removeComment")
+     */
+    public function removeCommentAction(Request $request, Comment $commentId)
+    {
+        $user = $this->getUser();
+        if ($user){
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository(Comment::class);
+            $comment = $repository->findOneBy(
+                array('id'=>$commentId)
+            );
+            if ($comment != null){
+                $em->remove($comment);
+                $em->flush();
+            }
+            return $this->redirectToRoute('article',['id' => $comment->getArticle()->getId()]);
+        }
+    }
+
+    /**
+     * @Route("/profile", name="profile")
+     */
+    public function profileAction()
+    {
+        $user = $this->getUser();
+        return $this->render('Profile/profile.html.twig', ['user' => $user]);
+    }
+
+    /**
+     * @Route("/profile/edit", name="profileEdit")
+     */
+    public function editProfileAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user = $this->getUser();
+        if ($user){
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+                $user->setPassword($password);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('profile');
+            }
+            return $this->render('Profile/edit.html.twig', ['user' => $user, 'form' => $form->createView()]);
+        }
+    }
+
+    /*
+    public function messageEditAction(Request $request, Message $messageId){
+        $user = $this->getUser();
+        if ($user  != null && $this->getUser()->hasRole("ROLE_ADMIN")){
+          $em = $this->getDoctrine()->getManager();
+          $repository = $em->getRepository(Message::class);
+          $message = $repository->findOneBy(
+            array('id'=>$messageId)
+          );
+          $form = $this->createForm(MessageType::class, $message);
+
+          $form->handleRequest($request);
+
+          if ($form->isSubmitted() && $form->isValid())
+          {
+              $message->setDateUpdated(new \DateTime(date('Y-m-d H:i:s')));
+              $em = $this->getDoctrine()->getManager();
+              $em->persist($message);
+              $em->flush();
+
+              return $this->redirectToRoute('ticket_homepage');
+          }
+
+          return $this->render('TicketBundle:Message:editMessage.html.twig',
+              ['form' => $form->createView(),'user'=>$user]
+          );
+        }else{
+          return $this->redirectToRoute('ticket_homepage');
+        }
+      }
+    */
+
+
+    /**
+     * @Route("/profile/{id}", name="profileUser")
+     */
+    public function userProfileAction(Request $request, User $userId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(User::class);
+        $user = $repository->findOneBy(
+            array('id'=>$userId)
+        );
+        $repository = $em->getRepository(Article::class);
+        $articles = $repository->findBy(array());
+        return $this->render('Profile/user.html.twig', ['user' => $user, 'articles' => $articles]);
+    }
+
+    /*
+    public function showArticleAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Article::class);
+        $article = $repository->findOneBy(array('id'=>$articleId));
+        $comments = $article->getComments()->toArray();
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $comment->setAuthor($user);
+            $comment->setArticle($article);
+            $em->persist($comment);
+            $em->flush();
+            return $this->redirectToRoute('article',['id' => $article->getId()]);
+        }
+
+        return $this->render('Article/article.html.twig', ['article'=>$article, 'comments'=>$comments, 'form' => $form->createView()]);
+    }
+
+     */
+
+    /**
+     * @return string
+     */
+    private function generateUniqueFileName()
+    {
+        // md5() reduces the similarity of the file names generated by
+        // uniqid(), which is based on timestamps
+        return md5(uniqid());
+    }
+
 
 }

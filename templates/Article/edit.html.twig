@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        Edit article
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit"></input>
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

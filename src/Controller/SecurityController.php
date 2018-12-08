@@ -17,10 +17,15 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $helper)
     {
-        return $this->render('Security/login.html.twig', [
-            'last_username' => $helper->getLastUsername(),
-            'error' => $helper->getLastAuthenticationError(),
-        ]);
+        $user = $this->getUser();
+        if ($user){
+            return $this->redirectToRoute('home');
+        } else {
+            return $this->render('Security/login.html.twig', [
+                'last_username' => $helper->getLastUsername(),
+                'error' => $helper->getLastAuthenticationError(),
+            ]);
+        }
     }
 
     /**
@@ -28,23 +33,27 @@ class SecurityController extends AbstractController
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-            $user->setRoles(['ROLE_USER']);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            return $this->redirectToRoute('security_login');
+        $user = $this->getUser();
+        if ($user){
+            return $this->redirectToRoute('home');
+        } else {
+            $newUser = new User();
+            $form = $this->createForm(UserType::class, $newUser);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $password = $passwordEncoder->encodePassword($newUser, $newUser->getPassword());
+                $newUser->setPassword($password);
+                $newUser->setRoles(['ROLE_USER']);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($newUser);
+                $em->flush();
+                return $this->redirectToRoute('security_login');
+            }
+            return $this->render(
+                'Security/register.html.twig',
+                array('form' => $form->createView())
+            );
         }
-        return $this->render(
-            'Security/register.html.twig',
-            array('form' => $form->createView())
-        );
     }
 
     /**

@@ -3,7 +3,32 @@
 {% block body %}
 
     <div class="row">
-        Blog
+        <h2>List of articles</h2>
+        {% if is_granted('ROLE_BLOGGER') %}
+            <a class="buttonForm buttonSmall" href="{{ path('create')}}">+ new article</a>
+            <br><br>
+        {% endif %}
+        <div class="blog">
+            {% for article in articles|reverse %}
+                <div class="card">
+                    <h3>{{ article.title }}</h3>
+                    <br>
+                    <p class="largeText">"{{ article.text|slice(0, 30) }}{% if article.text|length > 30 %}...{% endif %}"</p>
+                    <hr>
+                    <a class="buttonForm buttonSmall know" href="{{ path('article', {id:article.id})}}">learn more</a>
+                    <p class="who">{{ article.date|date("m/d/y - H:m:s") }}<br>by "<a href="{{ path('profileUser', {id:article.author.id}) }}">{{ article.author.username }}</a>"</p>
+                </div>
+                <br>
+            {% endfor %}
+        </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function (){
+            $('#pathBlog').addClass('active');
+        })
+    </script>
 {% endblock %}

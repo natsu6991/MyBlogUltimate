@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="" style="position:relative; top: 30px; display: inline-flex;">
+            <div style="display: block; width: 200px;">
+                {% if user.gender == 1 %}
+                    <img src="{{ asset('assets/images/homme.svg') }}">
+                {% elseif user.gender == 2 %}
+                    <img src="{{ asset('assets/images/femme.svg') }}">
+                {% endif %}
+            </div>
+            <div style="display: block;background-color: silver;">
+                {{ user.username }}<br>
+                Profile of {{ user.firstname }} {{ user.lastname }}<br>
+                Email : {{ user.email }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <br>Roles :
+                    {% for role in user.roles %}
+                        {% if role == 'ROLE_ADMIN' %}
+                            ROLE_ADMIN, ROLE_BLOGGER, ROLE_USER
+                        {% elseif role == 'ROLE_BLOGGER' %}
+                            ROLE_BLOGGER, ROLE_USER
+                        {% elseif role == 'ROLE_USER' %}
+                            ROLE_USER
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% for article in articles %}
+                    {% if article.author.username == user.username %}
+                        <div class="card">
+                            <h3>{{ article.title }}</h3>
+                            <p class="largeText">"{{ article.text|slice(0, 45) }}{% if article.text|length > 45 %}...{% endif %}"</p>
+                            <hr>
+                            <a class="buttonForm buttonSmall know" href="{{ path('article', {id:article.id})}}">learn more</a>
+                            <p class="who">{{ article.date|date("m/d/y - H:m:s") }}<br>by "<a href="{{ path('profileUser', {id:article.author.id}) }}">{{ article.author.username }}</a>"</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .pic{
+            width:30%;
+            height:20px;
+            background-color: ;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+
+
+{#######################################################################################################################}
+
+
+{% extends 'base.html.twig' %}
+
+{% block css %}{% endblock %}
+
+{% block body %}
+    <div class="center-align">
+        <a class="waves-effect waves-light btn return" href="{{ path('index') }}">homepage</a>
+        <div class="card-panel teal lighten-2 title">
+            <h5>ADMIN Change account status</h5>
+        </div>
+
+        <form class="row" action="{{ path('change_status') }}" method="post">
+            <div class="form-group">
+                <label for="subjectchoice">Choose a user</label>
+                <select id="userchoice" class="browser-default" name="userchoice" class="form-control"/>
+                {%for user in users%}
+                    {%if user.roles[0] != 'ROLE_ADMIN'%}
+                        <option value="{{user.id}}"> {{user.firstname}} {{user.lastname}} - {{user.roles[0]}}</option>
+                    {%endif%}
+                {%endfor%}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rolechoice">Choose a Teacher to assign that subject</label>
+                <select id="rolechoice" name="rolechoice" class="browser-default form-control"/>
+                <option value="ROLE_USER">Student</option>
+                <option value="ROLE_TEACHER">Teacher</option>
+                </select>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> Send
+            </button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+#}

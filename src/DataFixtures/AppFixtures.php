@@ -18,13 +18,14 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        foreach ($this->getUserData() as [$firstname, $lastname, $username, $password, $email, $roles]) {
+        foreach ($this->getUserData() as [$firstname, $lastname, $username, $password, $email, $gender, $roles]) {
             $user = new User();
             $user->setFirstname($firstname);
             $user->setLastname($lastname);
             $user->setUsername($username);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
             $user->setEmail($email);
+            $user->setGender($gender);
             $user->setRoles($roles);
 
             $manager->persist($user);
@@ -37,10 +38,10 @@ class AppFixtures extends Fixture
     private function getUserData(): array
     {
         return [
-            // $userData = [$firstname, $lastname, $username, $password, $email, $roles];
-            ['Admin', 'Admin', 'admin', 'admin', 'admin@gmail.com', ['ROLE_ADMIN']],
-            ['Blogger', 'Blogger', 'blogger', 'blogger', 'blogger@gmail.com', ['ROLE_BLOGGER']],
-            ['Test', 'Test', 'test', 'test','test@gmail.com',['ROLE_USER']],
+            // $userData = [$firstname, $lastname, $username, $password, $email, $gender, $roles];
+            ['Admin', 'Admin', 'admin', 'admin', 'admin@gmail.com', 1, ['ROLE_ADMIN']],
+            ['Blogger', 'Blogger', 'blogger', 'blogger', 'blogger@gmail.com', 1, ['ROLE_BLOGGER']],
+            ['User', 'User', 'user', 'user', 'user@gmail.com', 1, ['ROLE_USER']],
         ];
     }
 

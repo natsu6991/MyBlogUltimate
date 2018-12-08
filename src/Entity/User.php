@@ -60,6 +60,14 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
+    private $gender;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=64)
@@ -109,13 +117,23 @@ class User implements UserInterface, \Serializable
     }
 
     public function getEmail()
-    {
-        return $this->email;
-    }
+{
+    return $this->email;
+}
 
     public function setEmail(string $email)
     {
         $this->email = $email;
+    }
+
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    public function setGender(int $gender)
+    {
+        $this->gender = $gender;
     }
 
     public function getPassword()

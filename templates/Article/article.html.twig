@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+
+        <a class="buttonForm buttonSmall" href="{{ path('blog')}}">< return</a>
+        {% if is_granted('ROLE_BLOGGER') %}
+            {% if app.user.username == article.author.username %}
+                <a class="buttonForm buttonSmall" href="{{ path('editArticle', {id:article.id})}}">modify article</a>
+                <a class="buttonForm buttonSmall" href="{{ path('removeArticle', {id:article.id}) }}">remove article</a>
+            {% elseif app.user.username == 'admin' %}
+                <a class="buttonForm buttonSmall" href="{{ path('removeArticle', {id:article.id}) }}">remove article</a>
+            {% endif %}
+        {% endif %}
+        <br>
+        <br>
+        <div style="border: 1px solid black">
+            {{ article.title }}<br>
+            <a href="{{ path('profileUser', {id:article.author.id}) }}">{{ article.author.username }}</a><br>
+            {{ article.date|date }}<br>
+            {{ article.text }}
+            <a><img id="myImg" style="width:100%;max-width:300px" src="{{ asset('uploads/images/' ~ article.image) }}"></a>
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="imgValue">
+            </div>
+        </div>
+        <br>
+        {% if is_granted('ROLE_USER') %}
+            Create comment
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit"></input>
+            {{ form_end(form) }}
+        {% endif %}
+        <br>
+        <div style="border: 1px solid black">
+            comment
+            {% if comments is defined %}
+                {% for comment in comments %}
+                    <hr>
+                    <div>
+                        <p>
+                            {{comment.text}}
+                        </p>
+                        <p>par {{comment.author.username}} | {#Crée le {{message.dateCreated |date('Y-m-d')}} | Modifié le {{message.dateUpdated |date('Y-m-d')}}#}</p>
+
+                        {% if is_granted('ROLE_USER') and app.user.username == comment.author.username or app.user.username == article.author.username or app.user.username == 'admin' %}
+                            <a class="buttonForm buttonSmall" href="{{ path('removeComment', {id:comment.id}) }}">remove comment</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#myImg').click(function () {
+            $('#myModal').css("display", "block");
+            var image = $('#myImg').attr("src");
+            $('#imgValue').attr("src", image);
+        });
+        $('.close').click(function () {
+            $('#myModal').css("display", "none");
+        });
+    </script>
+{% endblock %}

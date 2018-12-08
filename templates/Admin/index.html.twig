@@ -3,7 +3,83 @@
 {% block body %}
 
     <div class="row">
-        Index admin
+        <table style="width: 100%;">
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.gender == 1 %}
+                            Man
+                        {% elseif user.gender == 2 %}
+                            Woman
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_ADMIN' %}
+                                ROLE_ADMIN, ROLE_BLOGGER, ROLE_USER
+                            {% elseif role == 'ROLE_BLOGGER' %}
+                                ROLE_BLOGGER, ROLE_USER
+                            {% elseif role == 'ROLE_USER' %}
+                                ROLE_USER
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <button>profile</button>
+                        {% if user.username != 'admin' %}
+                            <br><button>change role</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <table style="width: 100%;">
+            <tr>
+                <th>Id</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Text</th>
+                <th>Actions</th>
+            </tr>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>{{ article.author.username }}</td>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.date|date }}</td>
+                    <td style="width: 40%">{{ article.text }}</td>
+                    <td>
+                        <button>show</button>
+                        <button>remove</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function (){
+            $('#pathHome').addClass('active');
+        })
+    </script>
 {% endblock %}

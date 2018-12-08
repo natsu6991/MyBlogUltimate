@@ -1,0 +1,329 @@
+/*
+    TODO: BASE/NAV __________________________________________________________________________________________________#
+*/
+
+body{
+    margin:0;
+    font-family: "Roboto", sans-serif;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 6%;
+    overflow: hidden;
+    background-color: #333;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.row {
+    margin: 30px 7%;
+}
+
+li {
+    float: left;
+}
+
+li a, .dropbtn, .white {
+    display: inline-block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: white;
+}
+
+li a:hover, .dropdown:hover .dropbtn, .active {
+    background-color: #848484;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.right {
+    float: right;
+}
+
+
+/*
+    TODO: FORM ________________________________________________________________________________________________________#
+*/
+
+.divform{
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 20px auto 0;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.divform .form{
+    margin-top: 0;
+}
+
+.divform .form input{
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.divform .form input:hover{
+
+}
+
+.divform .form button{
+    text-transform: uppercase;
+    outline: 0;
+    background: #333;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.divform .message{
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+.divform .message a{
+    color: #333;
+    text-decoration: none;
+}
+
+.row ul{
+    background-color: white;
+    box-shadow: 0 0;
+    padding: 0;
+}
+
+/*
+    TODO: HOME ________________________________________________________________________________________________________#
+*/
+
+.middleSpace{
+    margin-top: 150px;
+    text-align: center;
+}
+
+.buttonForm{
+    text-decoration: none;
+    transition-duration: 0.4s;
+    padding: 8px 32px;
+    color: black;
+    border: 2px solid #333;
+    border-radius: 7px;
+}
+
+.buttonForm:hover{
+    background-color: #333;
+    color: white;
+}
+
+
+/*
+    TODO: BLOG ________________________________________________________________________________________________________#
+*/
+.blog{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.card{
+    border-radius: 15px;
+    padding: 1.2%;
+    margin: 0.3%;
+    position: relative;
+    background-color: #636363;
+    color: white;
+    width:47%;
+}
+
+.card h3{
+    margin: 0;
+    text-align: center;
+}
+
+.card p {
+    margin: 7px 0px 7px;
+}
+.card .largeText{
+    font-family: "Courier New";
+}
+
+.card .know{
+    position: absolute;
+    right: 2.5%;
+    bottom: 15px;
+}
+.card hr{
+    margin-bottom: 55px;
+}
+.card .who{
+    position: absolute;
+    bottom: 10px;
+    color: #b4b4b4;
+}
+.card .who a{
+    color: white;
+    text-decoration: none;
+}
+
+.card .buttonForm{
+    border-color: white;
+    color: white;
+    padding: 8px 10px;
+}
+.card .buttonForm:hover{
+    background-color: white;
+    color: black;
+}
+
+.buttonSmall{
+    padding: 0 5px;
+}
+
+
+
+/*
+    TODO: ADMIN ________________________________________________________________________________________________________#
+*/
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #9d9d9d;
+    text-align: left;
+    padding: 8px;
+    background-color: #bababa;
+}
+
+th{
+    background-color: #333;
+    color: white;
+}
+
+
+/*
+    TODO: IMAGE
+*/
+
+
+
+#myImg {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#myImg:hover {
+    opacity: 0.7;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}

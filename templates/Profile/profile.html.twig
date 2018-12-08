@@ -3,15 +3,12 @@
 {% block body %}
 
     <div class="row">
-        Home
+        {{ user.id }}
+        Profile of {{ user.firstname }} {{ user.lastname }}<br>
+        Email : {{ user.email }}
     </div>
 
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $(document).ready(function (){
-            $('#pathHome').addClass('active');
-        })
-    </script>
 {% endblock %}

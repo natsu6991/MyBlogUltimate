@@ -4,15 +4,16 @@
         <meta charset="UTF-8">
         <title>{% block title %}My Blog Ultimate{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        <link rel="stylesheet" href="{{ asset('style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     </head>
     <body>
         <ul>
             <li class="white">My Blog Ultimate</li>
             <div class="right">
-                <li><a href="{{ path('home') }}">Home</a></li>
-                <li><a href="{{ path('blog') }}">Blog</a></li>
-                {% if app.user %}
+                <li><a id="pathHome" href="{{ path('home') }}">Home</a></li>
+                <li><a id="pathBlog" href="{{ path('blog') }}">Blog</a></li>
+                {% if is_granted('ROLE_USER') %}
                     <li class="dropdown">
                         <a href="javascript:void(0)" class="dropbtn">
                             {% if app.user.username == "admin" %}
@@ -22,13 +23,13 @@
                             {% endif %}
                         </a>
                         <div class="dropdown-content">
-                            <a href="#">Profile</a>
+                            <a href="{{ path('profile') }}">Profile</a>
                             <a href="{{ path('security_logout') }}">Logout</a>
                         </div>
                     </li>
                 {% else %}
-                    <li><a href="{{ path('security_login') }}">Login</a></li>
-                    <li><a href="{{ path('security_register') }}">Register</a></li>
+                    <li><a id="pathLogin" href="{{ path('security_login') }}">Login</a></li>
+                    <li><a id="pathRegister" href="{{ path('security_register') }}">Register</a></li>
                 {% endif %}
             </div>
         </ul>

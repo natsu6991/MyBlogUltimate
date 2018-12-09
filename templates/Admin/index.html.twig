@@ -3,75 +3,113 @@
 {% block body %}
 
     <div class="row">
-        <table style="width: 100%;">
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Roles</th>
-                <th>Actions</th>
-            </tr>
-            {% for user in users %}
+        <div class="middle">
+            <h1>Dashboard</h1>
+            <a class="buttonForm buttonSmall" href="#usersLink">List of users</a>
+            <a class="buttonForm buttonSmall" href="#articlesLink">List of articles</a>
+            <a class="buttonForm buttonSmall" href="#commentsLink">List of comments</a>
+        </div>
+        <div id="usersLink">
+            <br>
+            <h3>List of users</h3>
+            <table style="width: 100%;">
                 <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.firstname }}</td>
-                    <td>{{ user.lastname }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>
-                        {% if user.gender == 1 %}
-                            Man
-                        {% elseif user.gender == 2 %}
-                            Woman
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% for role in user.roles %}
-                            {% if role == 'ROLE_ADMIN' %}
-                                ROLE_ADMIN, ROLE_BLOGGER, ROLE_USER
-                            {% elseif role == 'ROLE_BLOGGER' %}
-                                ROLE_BLOGGER, ROLE_USER
-                            {% elseif role == 'ROLE_USER' %}
-                                ROLE_USER
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.firstname }}</td>
+                        <td>{{ user.lastname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.gender == 1 %}
+                                Man
+                            {% elseif user.gender == 2 %}
+                                Woman
                             {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>
-                        <button>profile</button>
-                        {% if user.username != 'admin' %}
-                            <br><button>change role</button>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        <br>
-        <table style="width: 100%;">
-            <tr>
-                <th>Id</th>
-                <th>Author</th>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Text</th>
-                <th>Actions</th>
-            </tr>
-            {% for article in articles %}
+                        </td>
+                        <td>
+                            {% for role in user.roles %}
+                                {% if role == 'ROLE_ADMIN' %}
+                                    ROLE_ADMIN
+                                {% elseif role == 'ROLE_BLOGGER' %}
+                                    ROLE_BLOGGER
+                                {% elseif role == 'ROLE_USER' %}
+                                    ROLE_USER
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a class="buttonForm buttonSmall" href="{{ path('profileUser', {id:user.id})}}">profile</a>
+                            {% if user.username != 'admin' %}
+                                <a class="buttonForm buttonSmall" href="{{ path('change')}}">change role</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div id="articlesLink">
+            <br>
+            <h3>List of articles</h3>
+            <table style="width: 100%;">
                 <tr>
-                    <td>{{ article.id }}</td>
-                    <td>{{ article.author.username }}</td>
-                    <td>{{ article.title }}</td>
-                    <td>{{ article.date|date }}</td>
-                    <td style="width: 40%">{{ article.text }}</td>
-                    <td>
-                        <button>show</button>
-                        <button>remove</button>
-                    </td>
+                    <th>Id</th>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Text</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.id }}</td>
+                        <td>{{ article.author.username }}</td>
+                        <td>{{ article.title }}</td>
+                        <td>{{ article.date|date }}</td>
+                        <td>{{ article.text|slice(0, 45) }}{% if article.text|length > 45 %}...{% endif %}</td>
+                        <td>
+                            <a class="buttonForm buttonSmall" href="{{ path('article', {id:article.id})}}">show</a>
+                            <a class="buttonForm buttonSmall" href="{{ path('removeArticle', {id:article.id})}}">remove</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div id="commentsLink">
+            <br>
+            <h3>List of comments</h3>
+            <table style="width: 100%;">
+                <tr>
+                    <th>Id</th>
+                    <th>Author</th>
+                    <th>Date</th>
+                    <th>Text</th>
+                    <th>Actions</th>
+                </tr>
+                {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment.id }}</td>
+                        <td>{{ comment.author.username }}</td>
+                        <td>{{ comment.date|date }}</td>
+                        <td>{{ comment.text }}</td>
+                        <td>
+                            <a class="buttonForm buttonSmall" href="{{ path('article', {id:comment.article.id})}}">show</a>
+                            <a class="buttonForm buttonSmall" href="{{ path('removeComment', {id:comment.id, mode:"admin"})}}">remove</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
 {% endblock %}

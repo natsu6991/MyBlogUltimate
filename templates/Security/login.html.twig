@@ -19,7 +19,7 @@
                     <input type="password" placeholder="password" name="_password">
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                <button type="submit" class="btn btn-primary">Se connecter</button>
+                <button type="submit">Login</button>
                 <p class="message">Not registered? <a href="{{ path('security_register') }}">Create an account</a></p>
             </form>
         </div>

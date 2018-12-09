@@ -3,9 +3,80 @@
 {% block body %}
 
     <div class="row">
-        {{ user.id }}
-        Profile of {{ user.firstname }} {{ user.lastname }}<br>
-        Email : {{ user.email }}
+        <div class="" style=" margin: 0 10%;position:relative; top: 30px; display: inline-flex;">
+            <div style="display: block; width: 200px;">
+                {% if user.gender == 1 %}
+                    <img src="{{ asset('assets/images/homme.svg') }}">
+                {% elseif user.gender == 2 %}
+                    <img src="{{ asset('assets/images/femme.svg') }}">
+                {% endif %}
+            </div>
+            <div style="display: block;">
+                {{ user.username }}<br>
+                Profile of {{ user.firstname }} {{ user.lastname }}<br>
+                Email : {{ user.email }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <br>Roles :
+                    {% for role in user.roles %}
+                        {% if role == 'ROLE_ADMIN' %}
+                            ROLE_ADMIN, ROLE_BLOGGER, ROLE_USER
+                        {% elseif role == 'ROLE_BLOGGER' %}
+                            ROLE_BLOGGER, ROLE_USER
+                        {% elseif role == 'ROLE_USER' %}
+                            ROLE_USER
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% if articles is not empty %}
+            <div id="blockArticles">
+                <h3 style="text-align: center">Your articles</h3>
+                <div class="blog" style="background-color: silver;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Text</th>
+                            <th>Link</th>
+                        </tr>
+                        {% for article in articles%}
+                            <tr>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.date|date("h:m:s, d/m/y") }}</td>
+                                <td style="width: 40%">{{ article.text|slice(0, 45) }}{% if article.text|length > 45 %}...{% endif %}</td>
+                                <td>
+                                    <a class="buttonForm buttonSmall" href="{{ path('article', {id:article.id})}}"> here</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+        {% if comments is not empty %}
+            <div id="blockComments">
+                <h3 style="text-align: center">Your comments</h3>
+                <div>
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Date</th>
+                            <th>Text</th>
+                            <th>Link</th>
+                        </tr>
+                        {% for comment in comments %}
+                            <tr>
+                                <td>{{ comment.date|date("h:m:s, d/m/y") }}</td>
+                                <td style="width: 40%">{{ comment.text|slice(0, 45) }}{% if comment.text|length > 45 %}...{% endif %}</td>
+                                <td>
+                                    <a class="buttonForm buttonSmall" href="{{ path('article', {id:comment.article.id})}}"> here</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}

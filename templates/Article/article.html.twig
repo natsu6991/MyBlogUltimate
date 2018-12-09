@@ -18,10 +18,10 @@
         <div style="border: 1px solid black">
             {{ article.title }}<br>
             <a href="{{ path('profileUser', {id:article.author.id}) }}">{{ article.author.username }}</a><br>
-            {{ article.date|date }}<br>
+            {{ article.date|date("m/d/y - H:m:s") }}<br>
             {{ article.text }}
-            <a><img id="myImg" style="width:100%;max-width:300px" src="{{ asset('uploads/images/' ~ article.image) }}"></a>
-            <div id="myModal" class="modal">
+            <a><img id="img" style="width:100%;max-width:300px" src="{{ asset('uploads/images/' ~ article.image) }}"></a>
+            <div class="modal">
                 <span class="close">&times;</span>
                 <img class="modal-content" id="imgValue">
             </div>
@@ -44,10 +44,12 @@
                         <p>
                             {{comment.text}}
                         </p>
-                        <p>par {{comment.author.username}} | {#Crée le {{message.dateCreated |date('Y-m-d')}} | Modifié le {{message.dateUpdated |date('Y-m-d')}}#}</p>
+                        <p>par {{comment.author.username}} | {{ comment.date|date("m/d/y - H:m:s") }} {#Crée le {{message.dateCreated |date('Y-m-d')}} | Modifié le {{message.dateUpdated |date('Y-m-d')}}#}</p>
 
-                        {% if is_granted('ROLE_USER') and app.user.username == comment.author.username or app.user.username == article.author.username or app.user.username == 'admin' %}
-                            <a class="buttonForm buttonSmall" href="{{ path('removeComment', {id:comment.id}) }}">remove comment</a>
+                        {% if is_granted('ROLE_USER') %}
+                            {% if app.user.username == comment.author.username or app.user.username == article.author.username or app.user.username == 'admin' %}
+                                <a class="buttonForm buttonSmall" href="{{ path('removeComment', {id:comment.id, mode:"article"}) }}">remove comment</a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -60,13 +62,13 @@
 
 {% block javascripts %}
     <script>
-        $('#myImg').click(function () {
-            $('#myModal').css("display", "block");
-            var image = $('#myImg').attr("src");
+        $('#img').click(function () {
+            $('.modal').css("display", "block");
+            var image = $('#img').attr("src");
             $('#imgValue').attr("src", image);
         });
         $('.close').click(function () {
-            $('#myModal').css("display", "none");
+            $('.modal').css("display", "none");
         });
     </script>
 {% endblock %}

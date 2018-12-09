@@ -3,7 +3,7 @@
 {% block body %}
 
     <div class="row">
-        <div class="" style="position:relative; top: 30px; display: inline-flex;">
+        <div class="" style=" margin: 0 10%;position:relative; top: 30px; display: inline-flex;">
             <div style="display: block; width: 200px;">
                 {% if user.gender == 1 %}
                     <img src="{{ asset('assets/images/homme.svg') }}">
@@ -27,29 +27,63 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                {% for article in articles %}
-                    {% if article.author.username == user.username %}
-                        <div class="card">
-                            <h3>{{ article.title }}</h3>
-                            <p class="largeText">"{{ article.text|slice(0, 45) }}{% if article.text|length > 45 %}...{% endif %}"</p>
-                            <hr>
-                            <a class="buttonForm buttonSmall know" href="{{ path('article', {id:article.id})}}">learn more</a>
-                            <p class="who">{{ article.date|date("m/d/y - H:m:s") }}<br>by "<a href="{{ path('profileUser', {id:article.author.id}) }}">{{ article.author.username }}</a>"</p>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-
-
-
             </div>
         </div>
+        <br>
+        {% if articles is not empty %}
+            <div id="blockArticles">
+                <h3 class="middle">{{ user.username }}'s articles</h3>
+                <div class="blog" style="background-color: silver;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Text</th>
+                            <th>Link</th>
+                        </tr>
+                        {% for article in articles%}
+                            <tr>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.date|date("h:m:s, d/m/y") }}</td>
+                                <td style="width: 40%">{{ article.text|slice(0, 45) }}{% if article.text|length > 45 %}...{% endif %}</td>
+                                <td>
+                                    <a class="buttonForm buttonSmall" href="{{ path('article', {id:article.id})}}"> here</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+        {% if comments is not empty %}
+            <div id="blockComments">
+                <h3 style="text-align: center">{{ user.username }}'s comments</h3>
+                <div>
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Date</th>
+                            <th>Text</th>
+                            <th>Link</th>
+                        </tr>
+                        {% for comment in comments %}
+                            <tr>
+                                <td>{{ comment.date|date("h:m:s, d/m/y") }}</td>
+                                <td style="width: 40%">{{ comment.text|slice(0, 45) }}{% if comment.text|length > 45 %}...{% endif %}</td>
+                                <td>
+                                    <a class="buttonForm buttonSmall" href="{{ path('article', {id:comment.article.id})}}"> here</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <style>
         .pic{
             width:30%;
             height:20px;
-            background-color: ;
         }
     </style>
 {% endblock %}
@@ -59,7 +93,8 @@
 
 
 
-{#######################################################################################################################}
+
+{#
 
 
 {% extends 'base.html.twig' %}

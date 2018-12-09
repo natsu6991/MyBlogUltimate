@@ -49,5 +49,5 @@ security:
         - { path: '^/article/create', roles: ROLE_USER }
         - { path: '^/article/edit', roles: ROLE_USER }
         - { path: '^/article/remove', roles: ROLE_USER }
-        - { path: '^/profile/edit', roles: ROLE_USER }
+        - { path: '^/profile', roles: ROLE_USER }
         - { path: '^/admin', roles: ROLE_ADMIN }

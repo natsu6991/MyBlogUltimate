@@ -26,6 +26,13 @@ class Comment
     private $author;
 
     /**
+     * @var \Datetime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="text", type="string")
@@ -53,6 +60,16 @@ class Comment
     public function setAuthor(\App\Entity\User $author)
     {
         $this->author = $author;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function setDate(\Datetime $date)
+    {
+        $this->date = $date;
     }
 
     public function getText()

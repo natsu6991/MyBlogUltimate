@@ -53,6 +53,57 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/admin/role/", name="change")
+     */
+    public function changeRoleAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(User::class);
+        $users = $repository->findBy(array());
+        if($request->getMethod() == 'POST'){
+            $role = $request->get('rolechoice');
+            $userId = $request->get('userchoice');
+
+            $user = $repository->findOneBy(array('id'=>(int)$userId));
+            $user->setRoles(array($role));
+            $em->persist($user);
+            $em->flush();
+            return $this->render('Admin/change.html.twig', ['users'=>$users]);
+        }
+
+        return $this->render('Admin/change.html.twig', ['users'=>$users]);
+    }
+    /*
+
+    public function changeStatusAction(Request $request)
+    {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository(User::class);
+        $users = $repository->findBy(array());
+
+        if($request->getMethod() == 'POST'){
+            $role = $request->get('rolechoice');
+            $userid = $request->get('userchoice');
+
+            $user = $repository->findOneBy(array(
+                'id'=> (int)$userid
+            ));
+
+            $user->setRoles(array($role));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            return $this->render('security/admin_change_status.html.twig',['users'=>$users]);
+        }
+        return $this->render('security/admin_change_status.html.twig',['users'=>$users]);
+    }
+
+     */
+
+
+
+    /**
      * @Route("/home", name="home")
      */
     public function homeAction()
@@ -136,6 +187,7 @@ class DefaultController extends Controller
         {
             $comment->setAuthor($user);
             $comment->setArticle($article);
+            $comment->setDate(new \DateTime());
             $em->persist($comment);
             $em->flush();
             return $this->redirectToRoute('article',['id' => $article->getId()]);
@@ -160,6 +212,20 @@ class DefaultController extends Controller
 
             if ($form->isSubmitted() && $form->isValid())
             {
+
+                $image = $article->getImage();
+                if($image) {
+                    $imageName = $this->generateUniqueFileName() . '.' . $image->guessExtension();
+                    try {
+                        $image->move(
+                            $this->getParameter('images_directory'),
+                            $imageName
+                        );
+                    } catch (FileException $e) {
+
+                    }
+                    $article->setImage($imageName);
+                }
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($article);
                 $em->flush();
@@ -195,9 +261,9 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/comment/remove/{id}", name="removeComment")
+     * @Route("/comment/remove/{mode}/{id}", name="removeComment")
      */
-    public function removeCommentAction(Request $request, Comment $commentId)
+    public function removeCommentAction(Request $request, $mode, Comment $commentId)
     {
         $user = $this->getUser();
         if ($user){
@@ -210,7 +276,11 @@ class DefaultController extends Controller
                 $em->remove($comment);
                 $em->flush();
             }
-            return $this->redirectToRoute('article',['id' => $comment->getArticle()->getId()]);
+            if ($mode == "admin"){
+                return $this->redirectToRoute('admin');
+            }else{
+                return $this->redirectToRoute('article',['id' => $comment->getArticle()->getId()]);
+            }
         }
     }
 
@@ -220,7 +290,12 @@ class DefaultController extends Controller
     public function profileAction()
     {
         $user = $this->getUser();
-        return $this->render('Profile/profile.html.twig', ['user' => $user]);
+        $em = $this->getDoctrine()->getManager();
+        $repositoryA = $em->getRepository(Article::class);
+        $articles = $repositoryA->findBy(array('author'=>$user));
+        $repositoryC = $em->getRepository(Comment::class);
+        $comments = $repositoryC->findBy(array('author'=>$user));
+        return $this->render('Profile/profile.html.twig', ['user' => $user, 'articles' => $articles, 'comments' => $comments]);
     }
 
     /**
@@ -246,41 +321,8 @@ class DefaultController extends Controller
         }
     }
 
-    /*
-    public function messageEditAction(Request $request, Message $messageId){
-        $user = $this->getUser();
-        if ($user  != null && $this->getUser()->hasRole("ROLE_ADMIN")){
-          $em = $this->getDoctrine()->getManager();
-          $repository = $em->getRepository(Message::class);
-          $message = $repository->findOneBy(
-            array('id'=>$messageId)
-          );
-          $form = $this->createForm(MessageType::class, $message);
-
-          $form->handleRequest($request);
-
-          if ($form->isSubmitted() && $form->isValid())
-          {
-              $message->setDateUpdated(new \DateTime(date('Y-m-d H:i:s')));
-              $em = $this->getDoctrine()->getManager();
-              $em->persist($message);
-              $em->flush();
-
-              return $this->redirectToRoute('ticket_homepage');
-          }
-
-          return $this->render('TicketBundle:Message:editMessage.html.twig',
-              ['form' => $form->createView(),'user'=>$user]
-          );
-        }else{
-          return $this->redirectToRoute('ticket_homepage');
-        }
-      }
-    */
-
-
     /**
-     * @Route("/profile/{id}", name="profileUser")
+     * @Route("/user/{id}", name="profileUser")
      */
     public function userProfileAction(Request $request, User $userId)
     {
@@ -289,36 +331,12 @@ class DefaultController extends Controller
         $user = $repository->findOneBy(
             array('id'=>$userId)
         );
-        $repository = $em->getRepository(Article::class);
-        $articles = $repository->findBy(array());
-        return $this->render('Profile/user.html.twig', ['user' => $user, 'articles' => $articles]);
+        $repositoryA = $em->getRepository(Article::class);
+        $articles = $repositoryA->findBy(array('author'=>$user));
+        $repositoryC = $em->getRepository(Comment::class);
+        $comments = $repositoryC->findBy(array('author'=>$user));
+        return $this->render('Profile/user.html.twig', ['user' => $user, 'articles' => $articles, 'comments' => $comments]);
     }
-
-    /*
-    public function showArticleAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository(Article::class);
-        $article = $repository->findOneBy(array('id'=>$articleId));
-        $comments = $article->getComments()->toArray();
-        $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-        $user = $this->getUser();
-
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $comment->setAuthor($user);
-            $comment->setArticle($article);
-            $em->persist($comment);
-            $em->flush();
-            return $this->redirectToRoute('article',['id' => $article->getId()]);
-        }
-
-        return $this->render('Article/article.html.twig', ['article'=>$article, 'comments'=>$comments, 'form' => $form->createView()]);
-    }
-
-     */
 
     /**
      * @return string

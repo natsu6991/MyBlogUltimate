@@ -8,7 +8,7 @@
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     </head>
     <body>
-        <ul>
+        <ul id="nav">
             <li class="white">My Blog Ultimate</li>
             <div class="right">
                 <li><a id="pathHome" href="{{ path('home') }}">Home</a></li>
@@ -35,5 +35,30 @@
         </ul>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+        <div id="stop" class="scrollTop">
+            <span><a href=""><img src="{{ asset('assets/images/arrowTop.svg') }}"></a></span>
+        </div>
+        <script>
+            $(document).ready(function () {
+                var width = $('.dropbtn').width();
+                $('.dropdown-content a').width(width);
+
+                var scrollTop = $(".scrollTop");
+                $(window).scroll(function () {
+                    var topPos = $(this).scrollTop();
+                    if (topPos > 100) {
+                        $(scrollTop).css("opacity", "1");
+                    } else {
+                        $(scrollTop).css("opacity", "0");
+                    }
+                });
+                $(scrollTop).click(function () {
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 800);
+                    return false;
+                });
+            });
+        </script>
     </body>
 </html>

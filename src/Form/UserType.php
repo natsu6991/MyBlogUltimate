@@ -41,7 +41,8 @@ class UserType extends AbstractType
                     'man' => '1',
                     'woman' => '2'
                 ),
-                'expanded' => true,
+                'label' => false,
+                'expanded' => false,
                 'multiple' => false,
             ))
             ->add('username', TextType::class, array(

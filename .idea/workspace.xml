@@ -231,17 +231,6 @@
               <item name="myBlogUltimate" type="b2602c69:ProjectViewProjectNode" />
               <item name="myBlogUltimate" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
-            <path>
-              <item name="myBlogUltimate" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myBlogUltimate" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="myBlogUltimate" type="b2602c69:ProjectViewProjectNode" />
-              <item name="myBlogUltimate" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="bin" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -316,12 +305,12 @@
       <workItem from="1544198480509" duration="9406000" />
       <workItem from="1544293299826" duration="9249000" />
       <workItem from="1544351191279" duration="18807000" />
-      <workItem from="1544432983564" duration="5684000" />
+      <workItem from="1544432983564" duration="5787000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111959000" />
+    <option name="totallyTimeSpent" value="112062000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -334,9 +323,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27382874" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27382874" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />

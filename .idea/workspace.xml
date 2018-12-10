@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffa37776-88d2-48ed-a9d0-8927e7e4e786" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/Controller/DefaultController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/Article/create.html.twig" afterPath="$PROJECT_DIR$/templates/Article/create.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/Article/edit.html.twig" afterPath="$PROJECT_DIR$/templates/Article/edit.html.twig" />
-    </list>
+    <list default="true" id="ffa37776-88d2-48ed-a9d0-8927e7e4e786" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -288,12 +284,12 @@
       <workItem from="1544198480509" duration="9406000" />
       <workItem from="1544293299826" duration="9249000" />
       <workItem from="1544351191279" duration="18807000" />
-      <workItem from="1544432983564" duration="6586000" />
+      <workItem from="1544432983564" duration="6814000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112861000" />
+    <option name="totallyTimeSpent" value="113089000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">

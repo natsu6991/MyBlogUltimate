@@ -39,7 +39,7 @@ security:
 
     role_hierarchy:
         ROLE_BLOGGER:       ROLE_USER
-        ROLE_ADMIN: [ROLE_USER, ROLE_BLOGGER]
+        ROLE_SUPERADMIN: [ROLE_USER, ROLE_BLOGGER]
 
     access_control:
         # Les regles de securité
@@ -50,4 +50,4 @@ security:
         - { path: '^/article/edit', roles: ROLE_USER }
         - { path: '^/article/remove', roles: ROLE_USER }
         - { path: '^/profile', roles: ROLE_USER }
-        - { path: '^/admin', roles: ROLE_ADMIN }
+        - { path: '^/admin', roles: ROLE_SUPERADMIN }

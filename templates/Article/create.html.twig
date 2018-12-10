@@ -3,11 +3,13 @@
 {% block body %}
 
     <div class="row">
-        Create article
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit"></input>
-        {{ form_end(form) }}
+        <h1 class="middle">Create a new article</h1>
+        <div class="divform">
+            {{ form_start(form, {'attr':{'class':'form'}}) }}
+            {{ form_widget(form) }}
+            <button type="submit">Create</button>
+            {{ form_end(form) }}
+        </div>
 
     </div>
 

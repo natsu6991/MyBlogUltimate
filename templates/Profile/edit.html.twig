@@ -3,15 +3,19 @@
 {% block body %}
 
     <div class="row">
+        <h1 class="middle">Edit your profile</h1>
         <a class="buttonForm buttonSmall" href="{{ path('profile')}}">< return</a>
         <div class="divform">
             {{ form_start(form, {'attr':{'class':'form'}}) }}
-            {{ form_row(form.firstname) }}
-            {{ form_row(form.lastname) }}
-            {{ form_row(form.username) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.password) }}
-
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.lastname) }}
+                {{ form_row(form.username) }}
+                <div class="select">
+                    {{ form_row(form.gender) }}
+                    <div class="select__arrow"></div>
+                </div>
+                {{ form_row(form.email) }}
+                {{ form_row(form.password) }}
             <button type="submit">Update my profile</button>
             {{ form_end(form) }}
         </div>

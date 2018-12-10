@@ -25,8 +25,8 @@ And you just need to run this command for launching the server :
 
 To connect with the fixtures's users:
 
-| Username | Password | ROLES        |
-| -------- | -------- | ------------ |
-| user     | user     | ROLE_USER    |
-| blogger  | blogger  | ROLE_BLOGGER |
-| admin    | admin    | ROLE_ADMIN   |
+| Username | Password | ROLES             |
+| -------- | -------- | ----------------- |
+| user     | user     | ROLE_USER         |
+| blogger  | blogger  | ROLE_BLOGGER      |
+| admin    | admin    | ROLE_SUPERADMIN   |

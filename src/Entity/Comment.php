@@ -35,7 +35,7 @@ class Comment
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="string")
+     * @ORM\Column(name="text", type="text")
      */
     private $text;
 

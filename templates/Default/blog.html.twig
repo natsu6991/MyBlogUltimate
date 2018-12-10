@@ -3,6 +3,7 @@
 {% block body %}
 
     <div class="row">
+        <h1 class="middle">Blog</h1>
         <h2>List of articles</h2>
         {% if is_granted('ROLE_BLOGGER') %}
             <a class="buttonForm buttonSmall" href="{{ path('create')}}">+ new article</a>
@@ -16,7 +17,7 @@
                     <p class="largeText">"{{ article.text|slice(0, 30) }}{% if article.text|length > 30 %}...{% endif %}"</p>
                     <hr>
                     <a class="buttonForm buttonSmall know" href="{{ path('article', {id:article.id})}}">learn more</a>
-                    <p class="who">{{ article.date|date("m/d/y - H:m:s") }}<br>by "<a href="{{ path('profileUser', {id:article.author.id}) }}">{{ article.author.username }}</a>"</p>
+                    <p class="who">{{ article.date|date }}<br>by "<a href="{{ path('profileUser', {id:article.author.id}) }}">{{ article.author.username }}</a>"</p>
                 </div>
                 <br>
             {% endfor %}

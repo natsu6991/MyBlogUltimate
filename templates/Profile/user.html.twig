@@ -3,25 +3,25 @@
 {% block body %}
 
     <div class="row">
-        <div class="" style=" margin: 0 10%;position:relative; top: 30px; display: inline-flex;">
-            <div style="display: block; width: 200px;">
+        <h1 class="middle">Profile of {{ user.username }}</h1>
+        <div class="profile">
+            <div>
                 {% if user.gender == 1 %}
                     <img src="{{ asset('assets/images/homme.svg') }}">
                 {% elseif user.gender == 2 %}
                     <img src="{{ asset('assets/images/femme.svg') }}">
                 {% endif %}
             </div>
-            <div style="display: block;background-color: silver;">
-                {{ user.username }}<br>
-                Profile of {{ user.firstname }} {{ user.lastname }}<br>
+            <div>
+                Name : {{ user.firstname }} {{ user.lastname }}<br>
                 Email : {{ user.email }}
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_SUPERADMIN') %}
                     <br>Roles :
                     {% for role in user.roles %}
-                        {% if role == 'ROLE_ADMIN' %}
-                            ROLE_ADMIN, ROLE_BLOGGER, ROLE_USER
+                        {% if role == 'ROLE_SUPERADMIN' %}
+                            ROLE_SUPERADMIN
                         {% elseif role == 'ROLE_BLOGGER' %}
-                            ROLE_BLOGGER, ROLE_USER
+                            ROLE_BLOGGER
                         {% elseif role == 'ROLE_USER' %}
                             ROLE_USER
                         {% endif %}
@@ -33,8 +33,8 @@
         {% if articles is not empty %}
             <div id="blockArticles">
                 <h3 class="middle">{{ user.username }}'s articles</h3>
-                <div class="blog" style="background-color: silver;">
-                    <table style="width: 100%;">
+                <div>
+                    <table>
                         <tr>
                             <th>Title</th>
                             <th>Date</th>
@@ -44,8 +44,8 @@
                         {% for article in articles%}
                             <tr>
                                 <td>{{ article.title }}</td>
-                                <td>{{ article.date|date("h:m:s, d/m/y") }}</td>
-                                <td style="width: 40%">{{ article.text|slice(0, 45) }}{% if article.text|length > 45 %}...{% endif %}</td>
+                                <td>{{ article.date|date }}</td>
+                                <td class="textTD">{{ article.text|slice(0, 40) }}{% if article.text|length > 40 %}...{% endif %}</td>
                                 <td>
                                     <a class="buttonForm buttonSmall" href="{{ path('article', {id:article.id})}}"> here</a>
                                 </td>
@@ -57,9 +57,9 @@
         {% endif %}
         {% if comments is not empty %}
             <div id="blockComments">
-                <h3 style="text-align: center">{{ user.username }}'s comments</h3>
+                <h3 class="middle">{{ user.username }}'s comments</h3>
                 <div>
-                    <table style="width: 100%;">
+                    <table>
                         <tr>
                             <th>Date</th>
                             <th>Text</th>
@@ -67,8 +67,8 @@
                         </tr>
                         {% for comment in comments %}
                             <tr>
-                                <td>{{ comment.date|date("h:m:s, d/m/y") }}</td>
-                                <td style="width: 40%">{{ comment.text|slice(0, 45) }}{% if comment.text|length > 45 %}...{% endif %}</td>
+                                <td>{{ comment.date|date }}</td>
+                                <td class="textTD">{{ comment.text|slice(0, 40) }}{% if comment.text|length > 40 %}...{% endif %}</td>
                                 <td>
                                     <a class="buttonForm buttonSmall" href="{{ path('article', {id:comment.article.id})}}"> here</a>
                                 </td>
@@ -80,61 +80,7 @@
         {% endif %}
     </div>
 
-    <style>
-        .pic{
-            width:30%;
-            height:20px;
-        }
-    </style>
 {% endblock %}
 
 {% block javascripts %}
 {% endblock %}
-
-
-
-
-{#
-
-
-{% extends 'base.html.twig' %}
-
-{% block css %}{% endblock %}
-
-{% block body %}
-    <div class="center-align">
-        <a class="waves-effect waves-light btn return" href="{{ path('index') }}">homepage</a>
-        <div class="card-panel teal lighten-2 title">
-            <h5>ADMIN Change account status</h5>
-        </div>
-
-        <form class="row" action="{{ path('change_status') }}" method="post">
-            <div class="form-group">
-                <label for="subjectchoice">Choose a user</label>
-                <select id="userchoice" class="browser-default" name="userchoice" class="form-control"/>
-                {%for user in users%}
-                    {%if user.roles[0] != 'ROLE_ADMIN'%}
-                        <option value="{{user.id}}"> {{user.firstname}} {{user.lastname}} - {{user.roles[0]}}</option>
-                    {%endif%}
-                {%endfor%}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="rolechoice">Choose a Teacher to assign that subject</label>
-                <select id="rolechoice" name="rolechoice" class="browser-default form-control"/>
-                <option value="ROLE_USER">Student</option>
-                <option value="ROLE_TEACHER">Teacher</option>
-                </select>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary">
-                <i class="fa fa-sign-in" aria-hidden="true"></i> Send
-            </button>
-        </form>
-    </div>
-{% endblock %}
-
-{% block javascript %}
-{% endblock %}
-
-#}

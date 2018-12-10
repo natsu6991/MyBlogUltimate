@@ -90,6 +90,9 @@ li.dropdown {
 .middle{
     text-align: center;
 }
+.absolute{
+    position: absolute;
+}
 
 
 /*
@@ -153,6 +156,57 @@ li.dropdown {
     box-shadow: 0 0;
     padding: 0;
 }
+
+.select {
+    position: relative;
+    display: inline-block;
+    margin: 0 0 15px;
+    width: 100%;
+}
+.select select {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding: 10px 15px;
+    outline: 0;
+    border: 0;
+    height: 45px;
+    color: initial;
+    border-radius: 0;
+    background: #f2f2f2;
+    font-size: 14px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.select__arrow {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 5px 0 5px;
+    border-color: #7b7b7b transparent transparent transparent;
+}
+
+.textarea{
+    width: 89%;
+    height: 100px;
+    border: none;
+    padding: 15px 20px;
+    margin: 0 0 10px;
+    background-color: #f2f2f2;
+}
+
+.textarea::placeholder{
+    text-align: center;
+}
+
+input[type=submit], input[type=file]{
+    cursor: pointer;
+}
+
 
 /*
     TODO: HOME ________________________________________________________________________________________________________#
@@ -241,10 +295,38 @@ li.dropdown {
     padding: 0 5px;
 }
 
+.profile{
+    margin: 30px 10% 0;
+    display: inline-flex;
+}
+.profile img{
+    width: 200px;
+}
+.textTD{
+    width: 40%;
+}
 
+.linkUser{
+    color: #a5a5a5;
+    text-decoration: none;
+}
+
+.textBox{
+    border:1px solid #333;
+    border-radius: 15px;
+    padding: 8px;
+}
+
+.middleComment{
+    position: relative;
+    max-width: 50%;
+    margin: 20px auto 0;
+    padding: 45px;
+    text-align: center;
+}
 
 /*
-    TODO: ADMIN ________________________________________________________________________________________________________#
+    TODO: SUPERADMIN ________________________________________________________________________________________________________#
 */
 
 table {
@@ -274,10 +356,18 @@ th{
     border: 1px solid #333;
     cursor: pointer;
     transition: 0.3s;
+    width:100%;
+    max-width:800px;
+    height: 100%;
+    max-height: 400px;
 }
 
 #img:hover {
     opacity: 0.7;
+}
+
+.index{
+    z-index: 0;
 }
 
 .modal {
@@ -298,10 +388,9 @@ th{
     margin: auto;
     border-radius: 5px;
     display: block;
-    max-width: 80%;
-}
-
-.modal-content {
+    max-width: 70%;
+    max-height: 120%;
+    margin-bottom: 200px;
     animation-name: zoom;
     animation-duration: 0.6s;
 }
@@ -312,7 +401,7 @@ th{
 }
 
 .close {
-    position: absolute;
+    position: fixed;
     top: 15px;
     right: 35px;
     color: #f1f1f1;
@@ -326,10 +415,4 @@ th{
     color: #bbb;
     text-decoration: none;
     cursor: pointer;
-}
-
-@media only screen and (max-width: 700px){
-    .modal-content {
-        width: 100%;
-    }
 }

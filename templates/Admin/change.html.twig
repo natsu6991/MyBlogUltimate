@@ -3,35 +3,40 @@
 {% block body %}
 
     <div class="row">
+        <h1 class="middle">Change the role of an user</h1>
         <a class="buttonForm buttonSmall" href="{{ path('admin')}}">< return</a>
-
         <div class="divform">
             <form action="{{ path('change') }}" method="post" class="form">
                 <div>
-                    <label for="subjectchoice">Choose a user</label><br>
-                    <select id="userchoice" name="userchoice"/>
-                    {%for user in users%}
-                        {%if user.roles[0] != 'ROLE_ADMIN'%}
-                            <option value="{{user.id}}"> {{user.username}} - {{user.roles[0]}}</option>
-                        {%endif%}
-                    {%endfor%}
-                    </select>
+                    <label for="userchoice">Choose an user</label><br>
+                    <div class="select">
+                        <select id="userchoice" name="userchoice">
+                        {%for user in users%}
+                            {%if user.roles[0] != 'ROLE_SUPERADMIN'%}
+                                <option value="{{user.id}}">{{user.roles[0]}} - {{user.username}}</option>
+                            {%endif%}
+                        {%endfor%}
+                        </select>
+                        <div class="select__arrow"></div>
+                    </div>
                 </div>
+                <br>
                 <div>
                     <label for="rolechoice">Choose a role to assign for the user selected</label><br>
-                    <select id="rolechoice" name="rolechoice"/>
-                    <option value="ROLE_USER">User</option>
-                    <option value="ROLE_BLOGGER">Blogger</option>
-                    </select>
+                    <div class="select">
+                        <select id="rolechoice" name="rolechoice">
+                            <option value="ROLE_USER">User</option>
+                            <option value="ROLE_BLOGGER">Blogger</option>
+                        </select>
+                        <div class="select__arrow"></div>
+                    </div>
                 </div>
                 <br>
                 <button type="submit">
-                    <i aria-hidden="true"></i> Send
+                    Change
                 </button>
             </form>
         </div>
-
-
     </div>
 
 {% endblock %}

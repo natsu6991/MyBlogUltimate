@@ -39,8 +39,8 @@
                         </td>
                         <td>
                             {% for role in user.roles %}
-                                {% if role == 'ROLE_ADMIN' %}
-                                    ROLE_ADMIN
+                                {% if role == 'ROLE_SUPERADMIN' %}
+                                    ROLE_SUPERADMIN
                                 {% elseif role == 'ROLE_BLOGGER' %}
                                     ROLE_BLOGGER
                                 {% elseif role == 'ROLE_USER' %}

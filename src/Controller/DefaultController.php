@@ -193,7 +193,7 @@ class DefaultController extends Controller
             }
 
             return $this->render('Article/edit.html.twig',
-                ['form' => $form->createView(),'user'=>$user]
+                ['form' => $form->createView(),'user'=>$user,'id' => $article->getId()]
             );
         }else{
             return $this->redirectToRoute('blog');

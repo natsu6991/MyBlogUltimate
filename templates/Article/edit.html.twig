@@ -4,6 +4,7 @@
 
     <div class="row">
         <h1 class="middle">Edit your article</h1>
+        <a class="buttonForm buttonSmall" href="{{ path('article', {id:id})}}">< return</a>
         <div class="divform">
             {{ form_start(form, {'attr':{'class':'form'}}) }}
             {{ form_widget(form) }}
